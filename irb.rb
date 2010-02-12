@@ -98,7 +98,7 @@ unless $0 == 'script/server'
 
   # Tiger doesn't seem to like to let you install GNU Emacs easily, so starting emacs for me is a bit of a circus.
   class InteractiveEditor
-    ENV["VISUAL"] = '/opt/local/var/macports/software/emacs-app/23.1_0/Applications/MacPorts/Emacs.app/Contents/MacOS/bin/emacsclient -c'
+    ENV["VISUAL"] = '/usr/local/include/emacs/nextstep/Emacs.app/Contents/MacOS/bin/emacsclient -c'
   end
 
   module InteractiveEditing
