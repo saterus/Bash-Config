@@ -81,4 +81,7 @@ if [ -f /etc/bash_completion ]; then
 fi
 
 source ~/bash/bashing.sh
-source ~/bash/bashing_local.sh
+
+if [ -f ~/bash/bashing_local.sh ]; then
+    source ~/bash/bashing_local.sh
+fi
