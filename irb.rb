@@ -7,6 +7,8 @@ unless $0 == 'script/server'
   require 'rubygems'
   require 'utility_belt'
   require '~/rapleaf/util/raplite/trunk/lib/prolite'
+  require 'thrift'
+  require '~/rapleaf/spider/trunk/include/rap_support/thrift/diff_extension'
 
   # terminal color constants!
   unless defined?(IRB_CONSTS_LOADED)
@@ -26,7 +28,7 @@ unless $0 == 'script/server'
     ANSI_LPURPLE = "\033[1;35m"
     ANSI_CYAN = "\033[0;36m"
     ANSI_LCYAN = "\033[1;36m"
-    
+
     ANSI_BACKBLACK = "\033[40m"
     ANSI_BACKRED = "\033[41m"
     ANSI_BACKGREEN = "\033[42m"
@@ -35,14 +37,14 @@ unless $0 == 'script/server'
     ANSI_BACKPURPLE = "\033[45m"
     ANSI_BACKCYAN = "\033[46m"
     ANSI_BACKGRAY = "\033[47m"
-    
+
     ANSI_RESET = "\033[0m"
     ANSI_BOLD = "\033[1m"
     ANSI_UNDERSCORE = "\033[4m"
     ANSI_BLINK = "\033[5m"
     ANSI_REVERSE = "\033[7m"
     ANSI_CONCEALED = "\033[8m"
-    
+
     XTERM_SET_TITLE = "\033]2;"
     XTERM_END = "\007"
     ITERM_SET_TAB = "\033]1;"
@@ -69,7 +71,7 @@ unless $0 == 'script/server'
       methods -= Object.methods unless options.include? :more
       filter = options.select {|opt| opt.kind_of? Regexp}.first
       methods = methods.select {|name| name =~ filter} if filter
-      
+
       data = methods.sort.collect do |name|
         method = obj.method(name)
         if method.arity == 0
@@ -96,7 +98,6 @@ unless $0 == 'script/server'
     alias :pm :print_methods
   end
 
-  # Tiger doesn't seem to like to let you install GNU Emacs easily, so starting emacs for me is a bit of a circus.
   class InteractiveEditor
     ENV["VISUAL"] = '/usr/local/include/emacs/nextstep/Emacs.app/Contents/MacOS/bin/emacsclient -c'
   end
@@ -110,11 +111,35 @@ unless $0 == 'script/server'
 
   # equip my favorite utility belt tools.
   UtilityBelt.equip(:command_history, :convertable_to_file, :google, :hash_math, :interactive_editor, :irb_options, :is_an, :language_greps, :not, :pipe, :prompt, :string_to_proc, :symbol_to_proc, :wirble, :with)
+  Wirble::Colorize.enable_pp
 
   # quick access to the Raplite if needed.
   def sign
     $sign ||= Prolite::Sign.new
   end
 
+  def sample_dus
+    $sample_dus ||= [Rapleaf::Types::NewPersonData::DataUnit.new( :data => Rapleaf::Types::NewPersonData::DataUnitValueUnion.new( :source_membership => Rapleaf::Types::NewPersonData::SourceMembership.new( :exists => true, :source => Rapleaf::Types::NewPersonData::Source.new( :es_site => Rapleaf::Types::PersonData::EsSite::GOOGLE ) ) ) ),
+Rapleaf::Types::NewPersonData::DataUnit.new( :data => Rapleaf::Types::NewPersonData::DataUnitValueUnion.new( :source_membership => Rapleaf::Types::NewPersonData::SourceMembership.new( :exists => false, :source => Rapleaf::Types::NewPersonData::Source.new( :es_site => 135 ) ) ) ),
+Rapleaf::Types::NewPersonData::DataUnit.new( :data => Rapleaf::Types::NewPersonData::DataUnitValueUnion.new( :source_membership => Rapleaf::Types::NewPersonData::SourceMembership.new( :exists => false, :source => Rapleaf::Types::NewPersonData::Source.new( :es_site => 99 ) ) ) ),
+Rapleaf::Types::NewPersonData::DataUnit.new( :data => Rapleaf::Types::NewPersonData::DataUnitValueUnion.new( :source_membership => Rapleaf::Types::NewPersonData::SourceMembership.new( :exists => false, :source => Rapleaf::Types::NewPersonData::Source.new( :es_site => 99 ) ) ) ),
+Rapleaf::Types::NewPersonData::DataUnit.new( :data => Rapleaf::Types::NewPersonData::DataUnitValueUnion.new( :equiv => Rapleaf::Types::NewPersonData::PIN.new( :es_pin => Rapleaf::Types::NewPersonData::EsPIN.new( :site => 135, :identifier => Rapleaf::Types::NewPersonData::UserIdOrName.new( :username => "andrewrgrill" ) ) ) ) ),
+Rapleaf::Types::NewPersonData::DataUnit.new( :data => Rapleaf::Types::NewPersonData::DataUnitValueUnion.new( :equiv => Rapleaf::Types::NewPersonData::PIN.new( :es_pin => Rapleaf::Types::NewPersonData::EsPIN.new( :site => 135, :identifier => Rapleaf::Types::NewPersonData::UserIdOrName.new( :username => "Andrewrgrill" ) ) ) ) ),
+Rapleaf::Types::NewPersonData::DataUnit.new( :data => Rapleaf::Types::NewPersonData::DataUnitValueUnion.new( :equiv => Rapleaf::Types::NewPersonData::PIN.new( :es_pin => Rapleaf::Types::NewPersonData::EsPIN.new( :site => 68, :identifier => Rapleaf::Types::NewPersonData::UserIdOrName.new( :username => "Andrewrgrill" ) ) ) ) ),
+Rapleaf::Types::NewPersonData::DataUnit.new( :data => Rapleaf::Types::NewPersonData::DataUnitValueUnion.new( :equiv => Rapleaf::Types::NewPersonData::PIN.new( :email => "andrewrgrill@gmail.com" ) ) ),
+Rapleaf::Types::NewPersonData::DataUnit.new( :data => Rapleaf::Types::NewPersonData::DataUnitValueUnion.new( :equiv => Rapleaf::Types::NewPersonData::PIN.new))]
+  end
+
+  def sample_du
+    sample_dus.first
+  end
+
+  def sample_hash
+    $sample_hash ||= {:k => :v, :key => :value, 'k' => 'v', "key" => "v"}
+  end
+
+  def sample_array
+    $sample_array ||= [1,2,3,4,5,6,7,8,9,10]
+  end
 
 end
